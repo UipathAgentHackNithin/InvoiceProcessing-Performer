@@ -1,39 +1,85 @@
-### Documentation is included in the Documentation folder ###
+# InvoiceProcessing-Performer
 
+## Overview
 
-### REFrameWork Template ###
-**Robotic Enterprise Framework**
+**InvoiceProcessing-Performer** is a UiPath REFramework bot that acts as the **Performer** role in the Invoice Processing automation pipeline. It dequeues invoice transactions from a UiPath Orchestrator Queue (loaded by the [InvoiceProcessing-Dispatcher](../InvoiceProcessing-Dispatcher)) and processes each one end-to-end.
 
-* Built on top of *Transactional Business Process* template
-* Uses *State Machine* layout for the phases of automation project
-* Offers high level logging, exception handling and recovery
-* Keeps external settings in *Config.xlsx* file and Orchestrator assets
-* Pulls credentials from Orchestrator assets and *Windows Credential Manager*
-* Gets transaction data from Orchestrator queue and updates back status
-* Takes screenshots in case of system exceptions
+> **Project code:** `3201-invoice-processing`
 
+---
 
-### How It Works ###
+## REFramework: Dispatcher / Performer Pattern
 
-1. **INITIALIZE PROCESS**
- + ./Framework/*InitiAllSettings* - Load configuration data from Config.xlsx file and from assets
- + ./Framework/*GetAppCredential* - Retrieve credentials from Orchestrator assets or local Windows Credential Manager
- + ./Framework/*InitiAllApplications* - Open and login to applications used throughout the process
+This bot follows the standard UiPath **Dispatcher-Performer** split within the Robotic Enterprise Framework (REFramework):
 
-2. **GET TRANSACTION DATA**
- + ./Framework/*GetTransactionData* - Fetches transactions from an Orchestrator queue defined by Config("OrchestratorQueueName") or any other configured data source
+```
++----------------------------------+        +-----------------------------------+
+|  InvoiceProcessing-Dispatcher    |        |  InvoiceProcessing-Performer      |
+|                                  |        |                                   |
+|  Invoice source (inbox/folder)   |        |  Orchestrator Queue               |
+|       |                          |        |       |                           |
+|       v                          |        |       v                           |
+|  Read & enqueue invoice items    |------> |  Dequeue & process each invoice   |
+|                           Queue  |        |       |                           |
+|                                  |        |       v                           |
+|                                  |        |  Invoice processing end-to-end    |
++----------------------------------+        +-----------------------------------+
+```
 
-3. **PROCESS TRANSACTION**
- + *Process* - Process trasaction and invoke other workflows related to the process being automated 
- + ./Framework/*SetTransactionStatus* - Updates the status of the processed transaction (Orchestrator transactions by default): Success, Business Rule Exception or System Exception
+### Performer Responsibilities (this repo)
 
-4. **END PROCESS**
- + ./Framework/*CloseAllApplications* - Logs out and closes applications used throughout the process
+- Dequeue invoice transactions one at a time from the Orchestrator Queue
+- Open the target invoicing / ERP / AP application
+- Execute the invoice processing steps (validate, enter, post, approve)
+- Update the invoice status in the source system
+- Handle business exceptions (BizRuleException) and application exceptions (SystemException) per REFramework retry logic
+- Report queue item outcomes (Successful / BusinessException / ApplicationException)
 
+---
 
-### For New Project ###
+## Architecture
 
-1. Check the Config.xlsx file and add/customize any required fields and values
-2. Implement InitiAllApplications.xaml and CloseAllApplicatoins.xaml workflows, linking them in the Config.xlsx fields
-3. Implement GetTransactionData.xaml and SetTransactionStatus.xaml according to the transaction type being used (Orchestrator queues by default)
-4. Implement Process.xaml workflow and invoke other workflows related to the process being automated
+The bot follows the REFramework state machine:
+
+| State | Description |
+|---|---|
+| **Initialization** | Read config from Orchestrator Assets; open invoice application |
+| **Get Transaction Data** | Dequeue next invoice item from Orchestrator Queue |
+| **Process Transaction** | Execute invoice processing logic for the dequeued item |
+| **End Process** | Close applications; finalize reporting |
+
+### Exception Handling
+
+| Exception Type | Behaviour |
+|---|---|
+| **SystemException** | Retry up to `MaxRetryNumber` times; set item to Failed after exhausting retries |
+| **BusinessException** | Mark item as Failed immediately; log details for manual review |
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|---|---|
+| RPA Framework | UiPath REFramework |
+| Orchestration | UiPath Orchestrator (Queues, Assets, Logs) |
+| Target Application | Invoice / ERP / AP system (configured per deployment) |
+| Language | UiPath XAML Workflows |
+
+---
+
+## Configuration
+
+The following Orchestrator Assets must be created before deployment:
+
+| Asset Name | Type | Description |
+|---|---|---|
+| `Invoice_Queue_Name` | String | Source Orchestrator queue name (must match Dispatcher) |
+| `MaxRetryNumber` | Integer | Max retry attempts for SystemExceptions |
+| `Invoice_App_URL` | String | URL or path of the invoice application |
+
+---
+
+## Related Repositories
+
+- [InvoiceProcessing-Dispatcher](../InvoiceProcessing-Dispatcher) - populates the queue this bot consumes
