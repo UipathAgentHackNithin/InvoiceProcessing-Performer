@@ -9,7 +9,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>881.333333333333,948</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1378,1073.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="50">
@@ -77,55 +77,63 @@
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>NPOI</AssemblyReference>
       <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="582.666666666667,883.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="1388,1008.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="520.666666666667,96" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
-    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="520.666666666667,96" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Processing invoice: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from vendor: &quot; + If(in_TransactionItem.SpecificContent(&quot;VendorName&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;VendorName&quot;).ToString, &quot;UNKNOWN&quot;)]" />
-    <If Condition="[in_ErrorNeeded]" sap:VirtualizedContainerService.HintSize="520.666666666667,600" sap2010:WorkflowViewState.IdRef="If_1">
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="1340,96" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Started Process&quot;]" />
+    <ui:LogMessage DisplayName="Log Message Process Start" sap:VirtualizedContainerService.HintSize="1340,96" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Processing invoice: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from vendor: &quot; + If(in_TransactionItem.SpecificContent(&quot;Vendor&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Vendor&quot;).ToString, &quot;UNKNOWN&quot;)]" />
+    <If Condition="[in_ErrorNeeded]" sap:VirtualizedContainerService.HintSize="1340,577.333333333333" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <If Condition="[String.Equals(in_ErrorType, &quot;System&quot;, StringComparison.OrdinalIgnoreCase) OrElse String.Equals(in_ErrorType, &quot;Application&quot;, StringComparison.OrdinalIgnoreCase)]" sap:VirtualizedContainerService.HintSize="484,400" sap2010:WorkflowViewState.IdRef="If_2">
+        <If Condition="[String.Equals(in_ErrorType, &quot;System&quot;, StringComparison.OrdinalIgnoreCase) OrElse String.Equals(in_ErrorType, &quot;Application&quot;, StringComparison.OrdinalIgnoreCase)]" sap:VirtualizedContainerService.HintSize="878,412" sap2010:WorkflowViewState.IdRef="If_2">
           <If.Then>
-            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_System">
+            <Sequence sap:VirtualizedContainerService.HintSize="416,246.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_System">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log System Error Details" sap:VirtualizedContainerService.HintSize="420,96" sap2010:WorkflowViewState.IdRef="LogMessage_Sys" Level="Error" Message="[&quot;[Invoice Processing] System error on invoice &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from &quot; + If(in_TransactionItem.SpecificContent(&quot;VendorName&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;VendorName&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; | &quot; + in_ErrorMessage]" />
-              <Throw Exception="[new SystemException(&quot;[Invoice Processing] Failed to process invoice &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot;. &quot; + in_ErrorMessage)]" sap:VirtualizedContainerService.HintSize="420,25.3333333333333" sap2010:WorkflowViewState.IdRef="Throw_1" />
+              <ui:LogMessage DisplayName="Log: Invoking calculation" sap:VirtualizedContainerService.HintSize="368,96" sap2010:WorkflowViewState.IdRef="LogMessage_Sys" Level="Info" Message="[&quot;[Invoice Processing] Calculating invoice totals for: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;)]" />
+              <ui:InvokeWorkflowFile DisplayName="CalculateInvoiceTotals" sap:VirtualizedContainerService.HintSize="368,62" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" WorkflowFileName="CalculateInvoiceTotals.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="ui:QueueItem" x:Key="in_TransactionItem">[in_TransactionItem]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </Sequence>
           </If.Then>
           <If.Else>
-            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_Business">
+            <Sequence sap:VirtualizedContainerService.HintSize="416,246.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_Business">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Business Rule Violation" sap:VirtualizedContainerService.HintSize="420,96" sap2010:WorkflowViewState.IdRef="LogMessage_Biz" Level="Warn" Message="[&quot;[Invoice Processing] Business rule violation on invoice &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from &quot; + If(in_TransactionItem.SpecificContent(&quot;VendorName&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;VendorName&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; | Amount: &quot; + If(in_TransactionItem.SpecificContent(&quot;Amount&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Amount&quot;).ToString, &quot;N/A&quot;) + &quot; &quot; + If(in_TransactionItem.SpecificContent(&quot;Currency&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Currency&quot;).ToString, &quot;&quot;) + &quot; | &quot; + in_ErrorMessage]" />
-              <Throw Exception="[new BusinessRuleException(&quot;[Invoice Processing] Invoice &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from &quot; + If(in_TransactionItem.SpecificContent(&quot;VendorName&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;VendorName&quot;).ToString, &quot;UNKNOWN&quot;) + &quot;: &quot; + in_ErrorMessage + &quot; | Amount: $&quot; + If(in_TransactionItem.SpecificContent(&quot;Amount&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Amount&quot;).ToString, &quot;N/A&quot;) + &quot; &quot; + If(in_TransactionItem.SpecificContent(&quot;Currency&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Currency&quot;).ToString, &quot;&quot;))]" sap:VirtualizedContainerService.HintSize="420,25.3333333333333" sap2010:WorkflowViewState.IdRef="Throw_2" />
+              <ui:LogMessage DisplayName="Log: Invoking approval validation" sap:VirtualizedContainerService.HintSize="368,96" sap2010:WorkflowViewState.IdRef="LogMessage_Biz" Level="Info" Message="[&quot;[Invoice Processing] Validating vendor approval for invoice: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;)]" />
+              <ui:InvokeWorkflowFile DisplayName="ValidateInvoiceApproval" sap:VirtualizedContainerService.HintSize="368,62" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" WorkflowFileName="ValidateInvoiceApproval.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="ui:QueueItem" x:Key="in_TransactionItem">[in_TransactionItem]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
             </Sequence>
           </If.Else>
         </If>
       </If.Then>
       <If.Else>
-        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence sap:VirtualizedContainerService.HintSize="416,189.333333333333" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:LogMessage DisplayName="Log Process Success" sap:VirtualizedContainerService.HintSize="420,96" sap2010:WorkflowViewState.IdRef="LogMessage_Success" Level="Info" Message="[&quot;[Invoice Processing] Successfully processed invoice: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from &quot; + If(in_TransactionItem.SpecificContent(&quot;VendorName&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;VendorName&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; | Amount: $&quot; + If(in_TransactionItem.SpecificContent(&quot;Amount&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Amount&quot;).ToString, &quot;N/A&quot;) + &quot; &quot; + If(in_TransactionItem.SpecificContent(&quot;Currency&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Currency&quot;).ToString, &quot;&quot;)]" />
+          <ui:LogMessage DisplayName="Log Process Success" sap:VirtualizedContainerService.HintSize="368,96" sap2010:WorkflowViewState.IdRef="LogMessage_Success" Level="Info" Message="[&quot;[Invoice Processing] Successfully processed invoice: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; from &quot; + If(in_TransactionItem.SpecificContent(&quot;VendorName&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;VendorName&quot;).ToString, &quot;UNKNOWN&quot;) + &quot; | Amount: $&quot; + If(in_TransactionItem.SpecificContent(&quot;Amount&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Amount&quot;).ToString, &quot;N/A&quot;) + &quot; &quot; + If(in_TransactionItem.SpecificContent(&quot;Currency&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;Currency&quot;).ToString, &quot;&quot;)]" />
         </Sequence>
       </If.Else>
     </If>
