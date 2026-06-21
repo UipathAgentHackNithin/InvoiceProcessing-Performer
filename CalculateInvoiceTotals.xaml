@@ -52,7 +52,7 @@
 
     <!-- BUG 2: Split("." ) uses String literal — VB requires Char() e.g. Split(New Char(){"."c}) -->
     <!-- This line is never reached due to BUG 1 but is the secondary fix needed -->
-    <Assign DisplayName="Calculate Total (secondary LINQ bug)" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Calculate Total (fixed Split usage)" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_InvoiceTotal]</OutArgument>
       </Assign.To>
