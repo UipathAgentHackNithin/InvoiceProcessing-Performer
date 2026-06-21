@@ -41,18 +41,18 @@
     <!-- BUG 1: TaxAmount key does not exist in queue SpecificContent -->
     <!-- in_TransactionItem.SpecificContent("TaxAmount") returns Nothing -->
     <!-- Calling .ToString on Nothing throws System.NullReferenceException -->
-    <Assign DisplayName="Get TaxAmount (crashes — key missing)" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Get TaxAmount (null guard added)" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[taxAmountStr]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("TaxAmount").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String">[If(in_TransactionItem.SpecificContent.ContainsKey("TaxAmount"), in_TransactionItem.SpecificContent("TaxAmount").ToString, "0") ]</InArgument>
       </Assign.Value>
     </Assign>
 
     <!-- BUG 2: Split("." ) uses String literal — VB requires Char() e.g. Split(New Char(){"."c}) -->
     <!-- This line is never reached due to BUG 1 but is the secondary fix needed -->
-    <Assign DisplayName="Calculate Total (secondary LINQ bug)" sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign DisplayName="Calculate Total (secondary LINQ bug fixed)" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_InvoiceTotal]</OutArgument>
       </Assign.To>
