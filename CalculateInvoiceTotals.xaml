@@ -57,7 +57,7 @@
         <OutArgument x:TypeArguments="x:Int32">[out_InvoiceTotal]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">[CInt(in_TransactionItem.SpecificContent("Amount").ToString.Split("."c)(0)) + CInt(taxAmountStr.Split("."c)(0))]</InArgument>
+        <InArgument x:TypeArguments="x:Int32">[CInt(in_TransactionItem.SpecificContent("Amount").ToString.Split(".")(0)) + CInt(taxAmountStr.Split(".")(0))]</InArgument>
       </Assign.Value>
     </Assign>
 
