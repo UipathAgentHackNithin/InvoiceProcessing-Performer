@@ -45,7 +45,7 @@
         <OutArgument x:TypeArguments="x:String">[taxAmountStr]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("TaxAmount").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String">[If(in_TransactionItem.SpecificContent.ContainsKey("TaxAmount"), in_TransactionItem.SpecificContent("TaxAmount").ToString, "0") ]</InArgument>
       </Assign.Value>
     </Assign>
     <Assign DisplayName="Calculate Total (secondary LINQ bug)" sap2010:WorkflowViewState.IdRef="Assign_2">
