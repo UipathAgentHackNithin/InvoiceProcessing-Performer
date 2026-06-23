@@ -40,14 +40,14 @@
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log: Starting calculation" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;[Invoice Processing] Calculating totals for invoice: &quot; + If(in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;) IsNot Nothing, in_TransactionItem.SpecificContent(&quot;InvoiceNumber&quot;).ToString, &quot;UNKNOWN&quot;)]" />
-    <Assign DisplayName="Get TaxAmount (crashes — key missing)" sap2010:WorkflowViewState.IdRef="Assign_1">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:String">[taxAmountStr]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:String">[in_TransactionItem.SpecificContent("TaxAmount").ToString]</InArgument>
-      </Assign.Value>
-    </Assign>
+43:     <Assign DisplayName="Get TaxAmount (crashes — key missing)" sap2010:WorkflowViewState.IdRef="Assign_1">
+44:       <Assign.To>
+45:         <OutArgument x:TypeArguments="x:String">[taxAmountStr]</OutArgument>
+46:       </Assign.To>
+47:       <Assign.Value>
+48:         <InArgument x:TypeArguments="x:String">[If(in_TransactionItem.SpecificContent.ContainsKey("TaxAmount"), in_TransactionItem.SpecificContent("TaxAmount").ToString, "0") ]</InArgument>
+49:       </Assign.Value>
+50:     </Assign>
     <Assign DisplayName="Calculate Total (secondary LINQ bug)" sap2010:WorkflowViewState.IdRef="Assign_2">
       <Assign.To>
         <OutArgument x:TypeArguments="x:Int32">[out_InvoiceTotal]</OutArgument>
